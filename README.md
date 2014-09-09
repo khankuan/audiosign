@@ -16,6 +16,12 @@ The library can be used for the purpose such as pairing devices, or transmitting
 
 
 ## Basic Usage
+**Notes**
+- Off mic cancellation if your device have it.
+- Remember to on volume and remove earpiece to be able to allow other devices to listen.
+- Distance is about 0-3 metres, depending on noise level and volume. 
+- Might not work on all devices. Listening does not seem to work for Android so far.
+- Candidates found might not be extremely accurate. Do consider adding some failsafe mechanism to handle wrong ids.
 **Listener**
 ```javascript
 var listener = new AudioSign.AudioSignListener(options);  //  Create a new listener
