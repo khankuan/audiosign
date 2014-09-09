@@ -22,7 +22,7 @@ The library can be used for the purpose such as pairing devices, or transmitting
 - Distance is about 0-3 metres, depending on noise level and volume. 
 - Might not work on all devices. Listening does not seem to work for Android so far.
 - Candidates found might not be extremely accurate. Do consider adding some failsafe mechanism to handle wrong ids.
-```
+
 **Listener**
 ```javascript
 var listener = new AudioSign.AudioSignListener(options);  //  Create a new listener
