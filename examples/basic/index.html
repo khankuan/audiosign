@@ -1,0 +1,29 @@
+<html>
+  	<head>
+	    <title>AudioSign Test</title>
+
+	    <script src="../../dist/audiosign.min.js"></script>
+  	</head>
+
+  	<!-- Show what is broadcasted and what is listened	-->
+	<body>
+		<div id="broadcaster"></div>
+		<div id="listener"></div>
+	</body>
+
+
+	<!-- Play and listen	-->
+	<script>
+		//	Start listening
+		window.listener = new AudioSign.AudioSignListener();
+		window.listener.on('candidate', function(x){
+			document.getElementById('listener').innerHTML = "I am hearing " + x;
+		});
+		window.listener.start();
+
+		//	Start broadcasting
+		window.broadcaster = new AudioSign.AudioSignBroadcaster();
+		window.broadcaster.start();
+		document.getElementById('broadcaster').innerHTML = "I am broadcasting " + window.broadcaster.id;
+	</script>
+</html>
