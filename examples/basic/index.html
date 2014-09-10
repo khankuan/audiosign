@@ -7,23 +7,52 @@
 
   	<!-- Show what is broadcasted and what is listened	-->
 	<body>
-		<div id="broadcaster"></div>
-		<div id="listener"></div>
+		<div>
+			<button id="broadcasterButton" onclick="toggleBroadcaster()">Start Broadcasting</button>
+			<div id="broadcaster"></div>
+		</div>
+		<div>
+			<button id="listenerButton" onclick="toggleListener()">Start Listening</button>
+			<div id="listener"></div>
+		</div>
 	</body>
 
 
 	<!-- Play and listen	-->
 	<script>
-		//	Start listening
+		//	Listener init
 		window.listener = new AudioSign.AudioSignListener();
 		window.listener.on('candidate', function(x){
-			document.getElementById('listener').innerHTML = "I am hearing " + x;
+			document.getElementById('listener').innerHTML += "I am hearing " + x + "<br>";
 		});
-		window.listener.start();
+		var listenerButton = document.getElementById('listenerButton');
+
+		//	Broadcaster init
+		window.broadcaster = new AudioSign.AudioSignBroadcaster();
+		var broadcasterButton = document.getElementById('broadcasterButton');
+
+		function toggleListener(){
+			if (listenerButton.innerHTML == 'Start Listening'){
+				window.listener.start();
+				listenerButton.innerHTML = 'Stop Listening';
+			} else {
+				window.listener.stop();
+				listenerButton.innerHTML = 'Start Listening';
+				document.getElementById('listener').innerHTML += 'Stopped Listening<br>';
+			}
+		}
 
 		//	Start broadcasting
-		window.broadcaster = new AudioSign.AudioSignBroadcaster();
-		window.broadcaster.start();
-		document.getElementById('broadcaster').innerHTML = "I am broadcasting " + window.broadcaster.id;
+		function toggleBroadcaster(){
+			if (broadcasterButton.innerHTML == 'Start Broadcasting'){
+				window.broadcaster.start();
+				broadcasterButton.innerHTML = 'Stop Broadcasting';
+				document.getElementById('broadcaster').innerHTML += "I am broadcasting " + window.broadcaster.id + "<br>";
+			} else {
+				window.broadcaster.stop();
+				broadcasterButton.innerHTML = 'Start Broadcasting';
+				document.getElementById('broadcaster').innerHTML += 'Stopped Broadcasting<br>';
+			}
+		}
 	</script>
 </html>

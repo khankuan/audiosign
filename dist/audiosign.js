@@ -103,9 +103,10 @@ var AudioSignListener = function(options){
 	var candidateFoundStreak = options.candidateFoundStreak || 40;
 	var baseFrequency = 19000 - step * size || options.baseFrequency;
 	this._listeners = {};
+	window.audioSignAudioContext = window.audioSignAudioContext || new webkitAudioContext();
 
 	/*	Listen Once variables	*/
-	var binaryArray ;
+	var binaryArray;
 	var candidatePrevious;
 	var candidateStreak ;
 	var previousFoundCandidate;
@@ -113,8 +114,9 @@ var AudioSignListener = function(options){
 	/*	Reset	*/
 	this._reset = function(){
 		binaryArray = [];
-		delete candidatePrevious;
+		candidatePrevious = undefined;
 		candidateStreak = 0;
+		previousFoundCandidate = undefined;
 	}
 
 	/*	Emit method	*/
@@ -213,7 +215,6 @@ AudioSignListener.prototype.start = function(){
 	this._reset();
 	this._state = "Started";
 	var _this = this;
-	window.audioSignAudioContext = window.audioSignAudioContext || new webkitAudioContext();
 
 	/*	Callback for getUserMedia	*/
 	function startListen(stream){
@@ -225,7 +226,7 @@ AudioSignListener.prototype.start = function(){
 	    _this._analyserNode.smoothingTimeConstant = 0;
 
 	    _this._scriptProcessorNode = audioSignAudioContext.createScriptProcessor(1024, 1, 1);
-	    _this._scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {
+	    _this._scriptProcessorNode.onaudioprocess = function(audioProcessingEvent){
 	        _this._listenOnce();
 	    }
 
@@ -252,8 +253,12 @@ AudioSignListener.prototype.stop = function(type, callback){
 		throw new Error("Not started");
 
     this._mediaStream.stop();
-    delete this._audioInput;
+    this._audioInput.disconnect();
+    this._analyserNode.disconnect();
+    this._scriptProcessorNode.disconnect();
+
     delete this._mediaStream;
+    delete this._audioInput;
     delete this._analyserNode;
     delete this._scriptProcessorNode;
 	delete this._state;
