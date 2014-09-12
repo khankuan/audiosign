@@ -37,9 +37,10 @@ var AudioSignBroadcaster = function(options){
 	var size = options.size || 32;
 	var step = options.step || 80;
 	var baseFrequency = options.baseFrequency || 19000 - step * size;
-	this.id = Math.random()*(Math.pow(2, size));	//	Cannot be 0 or largest
+	this.id = Math.floor(Math.random()*(Math.pow(2, size)));	//	Cannot be 0 or largest
 	this.binaryArrayId = AudioSignUtil.integerToBinaryArray(this.id, size);
-	window.audioSignAudioContext = window.audioSignAudioContext || new webkitAudioContext();
+	window.AudioContext = AudioContext || webkitAudioContext;
+	window.audioSignAudioContext = window.audioSignAudioContext || new AudioContext();
 
 	/*	Create buffer and play	*/
 	this._startBuffer = function(){
@@ -103,7 +104,8 @@ var AudioSignListener = function(options){
 	var candidateFoundStreak = options.candidateFoundStreak || 40;
 	var baseFrequency = 19000 - step * size || options.baseFrequency;
 	this._listeners = {};
-	window.audioSignAudioContext = window.audioSignAudioContext || new webkitAudioContext();
+	window.AudioContext = AudioContext || webkitAudioContext;
+	window.audioSignAudioContext = window.audioSignAudioContext || new AudioContext();
 
 	/*	Listen Once variables	*/
 	var binaryArray;
