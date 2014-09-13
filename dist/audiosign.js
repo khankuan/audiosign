@@ -145,9 +145,9 @@ var AudioSignListener = function(options){
 	    	bins.push(freqByteData[i]);
 	    }
 	    bins = bins.sort(function(a,b){return a-b});
-	    var median = bins[bins.length/2];
-	    var percentile25 = bins[bins.length/4];
-	    var percentile75 = bins[bins.length/4*3];
+	    var median = bins[Math.floor(bins.length/2)];
+	    var percentile25 = bins[Math.floor(bins.length/4)];
+	    var percentile75 = bins[Math.floor(bins.length/4*3)];
 	    average = Math.max(median/2, percentile25);
 
 	    //	Populate sound to binaryArray
