@@ -10,6 +10,9 @@
   	<!-- Show what is broadcasted and what is listened	-->
 	<body>
 		<div>
+			<div>
+				<input type="text" id="idText"><button onclick="refresh()">Refresh</button>
+			</div>
 			<button id="broadcasterButton" onclick="toggleBroadcaster()">Start Broadcasting</button>
 			<div id="broadcaster"></div>
 		</div>
@@ -55,6 +58,18 @@
 				broadcasterButton.innerHTML = 'Start Broadcasting';
 				document.getElementById('broadcaster').innerHTML += 'Stopped Broadcasting<br>';
 			}
+		}
+
+		//	Refresh
+		function refresh(){
+			window.broadcaster.stop();
+			var broadcasterButton = document.getElementById('broadcasterButton');
+			broadcasterButton.innerHTML = 'Start Broadcasting';
+			var id = parseInt(document.getElementById('idText').value);
+			console.log(id)
+			window.broadcaster = new AudioSignBroadcaster({id: id});
+			var broadcasterButton = document.getElementById('broadcasterButton');
+			toggleBroadcaster();
 		}
 	</script>
 </html>
