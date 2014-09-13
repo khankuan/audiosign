@@ -2,7 +2,9 @@
   	<head>
 	    <title>AudioSign Test</title>
 
-	    <script src="../../dist/audiosign.min.js"></script>
+	    <script src="../../lib/audioSignBroadcaster.js"></script>
+	    <script src="../../lib/audioSignListener.js"></script>
+	    <script src="../../lib/util.js"></script>
   	</head>
 
   	<!-- Show what is broadcasted and what is listened	-->
@@ -21,14 +23,14 @@
 	<!-- Play and listen	-->
 	<script>
 		//	Listener init
-		window.listener = new AudioSign.AudioSignListener();
+		window.listener = new AudioSignListener();
 		window.listener.on('candidate', function(x){
-			document.getElementById('listener').innerHTML += "I am hearing " + x + "<br>";
+			document.getElementById('listener').innerHTML += "I am hearing " + x + "<br>" + AudioSignUtil.integerToBinaryArray(x, 32) + "<br>";
 		});
 		var listenerButton = document.getElementById('listenerButton');
 
 		//	Broadcaster init
-		window.broadcaster = new AudioSign.AudioSignBroadcaster();
+		window.broadcaster = new AudioSignBroadcaster({id: 1});
 		var broadcasterButton = document.getElementById('broadcasterButton');
 
 		function toggleListener(){
@@ -47,7 +49,7 @@
 			if (broadcasterButton.innerHTML == 'Start Broadcasting'){
 				window.broadcaster.start();
 				broadcasterButton.innerHTML = 'Stop Broadcasting';
-				document.getElementById('broadcaster').innerHTML += "I am broadcasting " + window.broadcaster.id + "<br>";
+				document.getElementById('broadcaster').innerHTML += "I am broadcasting " + window.broadcaster.id + "<br>" + AudioSignUtil.integerToBinaryArray(window.broadcaster.id, 32) + "<br>";
 			} else {
 				window.broadcaster.stop();
 				broadcasterButton.innerHTML = 'Start Broadcasting';
