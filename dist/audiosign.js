@@ -41,8 +41,8 @@ var AudioSignBroadcaster = function(options){
 		throw new Error("Invalid Id");
 	this.id = options.id || Math.floor(Math.random()*(Math.pow(2, size)));	//	Cannot be 0 or largest
 	this.binaryArrayId = AudioSignUtil.integerToBinaryArray(this.id, size);
-	window.AudioContext = AudioContext || webkitAudioContext;
-	window.audioSignAudioContext = window.audioSignAudioContext || new AudioContext();
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	window.audioSignAudioContext = window.audioSignAudioContext || new window.AudioContext();
 
 	/*	Create buffer and play	*/
 	this._startBuffer = function(){
@@ -106,8 +106,8 @@ var AudioSignListener = function(options){
 	var candidateFoundStreak = options.candidateFoundStreak || 40;
 	var baseFrequency = 19000 - step * size || options.baseFrequency;
 	this._listeners = {};
-	window.AudioContext = AudioContext || webkitAudioContext;
-	window.audioSignAudioContext = window.audioSignAudioContext || new AudioContext();
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	window.audioSignAudioContext = window.audioSignAudioContext || new window.AudioContext();
 
 	/*	Listen Once variables	*/
 	var binaryArray;
@@ -148,7 +148,7 @@ var AudioSignListener = function(options){
 	    var median = bins[Math.floor(bins.length/2)];
 	    var percentile25 = bins[Math.floor(bins.length/4)];
 	    var percentile75 = bins[Math.floor(bins.length/4*3)];
-	    average = Math.max(median/2, percentile25);
+	    average = median/2;
 
 	    //	Populate sound to binaryArray
 	    var currentByteBinary = [];
