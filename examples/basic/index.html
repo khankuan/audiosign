@@ -33,7 +33,7 @@
 		var listenerButton = document.getElementById('listenerButton');
 
 		//	Broadcaster init
-		window.broadcaster = new AudioSignBroadcaster({id: 1});
+		window.broadcaster = new AudioSignBroadcaster({id: 2863311530});
 		var broadcasterButton = document.getElementById('broadcasterButton');
 
 		function toggleListener(){
@@ -66,7 +66,6 @@
 			var broadcasterButton = document.getElementById('broadcasterButton');
 			broadcasterButton.innerHTML = 'Start Broadcasting';
 			var id = parseInt(document.getElementById('idText').value);
-			console.log(id)
 			window.broadcaster = new AudioSignBroadcaster({id: id});
 			var broadcasterButton = document.getElementById('broadcasterButton');
 			toggleBroadcaster();

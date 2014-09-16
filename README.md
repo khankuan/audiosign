@@ -51,6 +51,7 @@ Options are available to configure certain settings:
 - diminishingFactor: Factor for each bit's value to drop per cycle.
 - threshold: Factor for each bit to be counted as positive
 - candidateFoundStreak: Number of cycles to declare a new candidate found.
+- Optional events: 'started', 'stopped'
 
 **Broadcaster**
 Options are available to configure certain settings:
