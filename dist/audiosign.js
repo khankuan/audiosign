@@ -35,8 +35,8 @@ var AudioSignBroadcaster = function(options){
 	var _this = this;
 	options = options || {};
 	var size = options.size || 32;
-	var step = options.step || 80;
-	var baseFrequency = options.baseFrequency || 19000 - step * size;
+	var step = options.step || 70;
+	var baseFrequency = options.baseFrequency || 18800 - step * size;
 	if (options.id == 0 || options.id == Math.pow(2,size)-1)
 		throw new Error("Invalid Id");
 	this.id = options.id || Math.floor(Math.random()*(Math.pow(2, size)));	//	Cannot be 0 or largest
@@ -100,11 +100,11 @@ var AudioSignListener = function(options){
 	var _this = this;
 	options = options || {};
 	var size = options.size || 32;
-	var step = options.step || 80;
+	var step = options.step || 70;
 	var diminishingFactor = options.diminishingFactor || 0.95;
-	var threshold = options.threshold || 0.2;
-	var candidateFoundStreak = options.candidateFoundStreak || 40;
-	var baseFrequency = 19000 - step * size || options.baseFrequency;
+	var threshold = options.threshold || 0.25;
+	var candidateFoundStreak = options.candidateFoundStreak || 30;
+	var baseFrequency = 18800 - step * size || options.baseFrequency;
 	this._listeners = {};
 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
 	window.audioSignAudioContext = window.audioSignAudioContext || new window.AudioContext();
@@ -112,7 +112,7 @@ var AudioSignListener = function(options){
 	/*	Listen Once variables	*/
 	var binaryArray;
 	var candidatePrevious;
-	var candidateStreak ;
+	var candidateStreak;
 	var previousFoundCandidate;
 
 	/*	Reset	*/
@@ -142,20 +142,20 @@ var AudioSignListener = function(options){
 	    var bins = [];
 	    for (var i = 0; i < size*2; i++){
 	        var binI = Math.floor((baseFrequency+i*step-size*step) / audioSignAudioContext.sampleRate * 2048);
-	    	bins.push(freqByteData[i]);
+	    	bins.push(freqByteData[binI]);
 	    }
 	    bins = bins.sort(function(a,b){return a-b});
 	    var median = bins[Math.floor(bins.length/2)];
 	    var percentile25 = bins[Math.floor(bins.length/4)];
 	    var percentile75 = bins[Math.floor(bins.length/4*3)];
-	    average = median/2;
+	    average = median/3*2 + bins[bins.length-1]/3;	//	Take median with some reference to max
 
 	    //	Populate sound to binaryArray
 	    var currentByteBinary = [];
 	    for (var i = 0; i < size; i++){
 	        var binI = Math.floor((baseFrequency+i*step) / audioSignAudioContext.sampleRate * 2048);
 
-	        if (freqByteData[binI] > average || freqByteData[binI+1] > average){
+	        if (freqByteData[binI] > average){//} || freqByteData[binI+1] > average){
 	            binaryArray[i] = (binaryArray[i] || 0)*diminishingFactor + (1-diminishingFactor);
 	            currentByteBinary[i] = 1;
 	        } else {
@@ -235,6 +235,8 @@ AudioSignListener.prototype.start = function(){
 	    _this._audioInput.connect(_this._analyserNode);
 	    _this._analyserNode.connect(_this._scriptProcessorNode);
 	    _this._scriptProcessorNode.connect(audioSignAudioContext.destination);
+
+		_this._emit('started');
 	}
 
 	/*	getUserMedia	*/
@@ -264,6 +266,8 @@ AudioSignListener.prototype.stop = function(type, callback){
     delete this._analyserNode;
     delete this._scriptProcessorNode;
 	delete this._state;
+
+	_this._emit('stopped');
 }
 
 /*	Getusermedia across browser	*/
