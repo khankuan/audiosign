@@ -14,6 +14,7 @@ module.exports = function(grunt){
             },
             dist: {
 				src: [
+					'lib/dsp.js',
 		            'lib/util.js',
 		            'lib/audiosignbroadcaster.js',
 		            'lib/audiosignlistener.js',
