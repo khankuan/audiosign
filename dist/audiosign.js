@@ -2432,7 +2432,7 @@ var AudioSignListener = function(options){
 	var step = options.step || 35;
 	_this.bufferSize = 4096;
 	var diminishingFactor = options.diminishingFactor || 0.9;
-	var threshold = options.threshold || 0.15;
+	var threshold = options.threshold || 0.2;
 	var candidateFoundStreak = options.candidateFoundStreak || 12;
 	var baseFrequency = 18600 - step * size || options.baseFrequency;
 	this._listeners = {};
@@ -2601,7 +2601,7 @@ AudioSignListener.prototype.stop = function(type, callback){
     delete this._scriptProcessorNode;
 	delete this._state;
 
-	_this._emit('stopped');
+	this._emit('stopped');
 }
 
 /*	Getusermedia across browser	*/
