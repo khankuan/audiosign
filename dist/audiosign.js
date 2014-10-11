@@ -2366,6 +2366,8 @@ var AudioSignBroadcaster = function(options){
 	var step = options.step || 35;
 	var baseFrequency = options.baseFrequency || 18600 - step * size;
 	this.binaryId = AudioSignUtil.hex2bin(options.id || AudioSignUtil.bin2hex(AudioSignUtil.randomBinary(size)), size);
+	if (this.binaryId.indexOf(undefined) >= 0)
+		throw "Invalid Id. Id must be a hex string.";
 	this.id = AudioSignUtil.bin2hex(this.binaryId);
 
 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -2430,7 +2432,7 @@ var AudioSignListener = function(options){
 	var step = options.step || 35;
 	_this.bufferSize = 4096;
 	var diminishingFactor = options.diminishingFactor || 0.9;
-	var threshold = options.threshold || 0.2;
+	var threshold = options.threshold || 0.15;
 	var candidateFoundStreak = options.candidateFoundStreak || 12;
 	var baseFrequency = 18600 - step * size || options.baseFrequency;
 	this._listeners = {};
