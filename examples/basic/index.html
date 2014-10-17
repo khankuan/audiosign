@@ -2,6 +2,7 @@
   	<head>
 	    <title>AudioSign Test</title>
 
+	    <script src="../../lib/crc.js"></script>
 	    <script src="../../lib/dsp.js"></script>
 	    <script src="../../lib/audiosignbroadcaster.js"></script>
 	    <script src="../../lib/audiosignlistener.js"></script>
@@ -62,6 +63,8 @@
 
 		//	Refresh
 		function refresh(){
+			if (!window.broadcaster)
+				return;
 			window.broadcaster.stop();
 			var broadcasterButton = document.getElementById('broadcasterButton');
 			broadcasterButton.innerHTML = 'Start Broadcasting';

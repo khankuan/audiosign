@@ -21,6 +21,7 @@ The library can be used for the purpose such as pairing devices, or transmitting
 - Remember to on volume and remove earpiece to be able to allow other devices to listen.
 - Distance is about 0-10 metres, depending on noise level, volume and environment. 
 - Candidates found might not be extremely accurate. Do consider adding some failsafe mechanism to handle wrong ids.
+- IDs is appended with 8 bits CRC for correctness.
 
 **Listener**
 ```javascript
@@ -45,11 +46,8 @@ broadcaster.stop();                                       //  Do not wish to bro
 **Listener**
 Options are available to configure certain settings:
 - size: Size of the id, Default 64-bits. As size increases, it becomes more unstable and audible.
-- step: Step size between each frequency for each bit. Default 35. Too small, more unstable. Too big, audio can be more noticable.
-- baseFrequency: Base frequency to start with. Default is 18600 - size * step. Lower frequency makes the audio more noticable.
-- diminishingFactor: Factor for each bit's value to drop per cycle.
-- threshold: Factor for each bit to be counted as positive
-- candidateFoundStreak: Number of cycles to declare a new candidate found.
+- step: Step size between each frequency for each bit. Default 15. Too small, more unstable. Too big, audio can be more noticable.
+- baseFrequency: Base frequency to start with. Default is 18600 - (size+8) * step. Lower frequency makes the audio more noticable.
 - Optional events: 'started', 'stopped'
 
 **Broadcaster**
