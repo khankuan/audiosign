@@ -26,7 +26,7 @@ The library can be used for the purpose such as pairing devices, or transmitting
 **Listener**
 ```javascript
 var listener = new AudioSign.AudioSignListener(options);  //  Create a new listener
-listener.on('candidate', function(x){                     //  Callback when new candidate id (default 64-bit) is heard
+listener.on('candidate', function(x){                     //  Callback when new candidate id (default 160-bit) is heard
   console.log(x);
 });
 listener.start();                                         //  Start listening
@@ -37,7 +37,7 @@ listener.stop();                                          //  Do not wish to lis
 ```javascript
 var broadcaster = new AudioSign.AudioSignBroadcaster(options);  //  Create a new broadcaster
 broadcaster.start();                                      //  Start broadcasting
-console.log(broadcaster.id);                              //  The id (default 64-bit) that the broadcaster is broadcasting
+console.log(broadcaster.id);                              //  The id (default 160-bit) that the broadcaster is broadcasting
 //  Do other stuff...
 broadcaster.stop();                                       //  Do not wish to broadcast anymore
 ```
@@ -45,13 +45,13 @@ broadcaster.stop();                                       //  Do not wish to bro
 ## Advance Usage
 **Listener**
 Options are available to configure certain settings:
-- size: Size of the id, Default 64-bits. As size increases, it becomes more unstable and audible.
+- size: Size of the id, Default 160-bits. As size increases, it becomes more unstable and audible.
 - step: Step size between each frequency for each bit. Default 15. Too small, more unstable. Too big, audio can be more noticable.
 - baseFrequency: Base frequency to start with. Default is 18600 - (size+8) * step. Lower frequency makes the audio more noticable.
 - Optional events: 'started', 'stopped'
 
 **Broadcaster**
 Options are available to configure certain settings:
-- size: Size of the id, Default 64-bits. As size increases, it becomes more unstable.
-- step: Step size between each frequency for each bit. Default 35. Too small, more unstable. Too big, audio can be more noticable.
-- baseFrequency: Base frequency to start with. Default is 18600 - size * step. Lower frequency makes the audio more noticable.
+- size: Size of the id, Default 160-bits. As size increases, it becomes more unstable.
+- step: Step size between each frequency for each bit. Default 15. Too small, more unstable. Too big, audio can be more noticable.
+- baseFrequency: Base frequency to start with. Default is 18600 - (size+8) * step. Lower frequency makes the audio more noticable.
