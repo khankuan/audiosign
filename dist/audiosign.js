@@ -2810,6 +2810,7 @@ var AudioSignBroadcaster = function(options){
 	options = options || {};
 	var size = options.size || 160;
 	var step = options.step || 15;
+	var blink = options.blink || {cycle: 1000, active: 300};
 	var baseFrequency = options.baseFrequency || 18600 - step * (size + 8);	//	8-bit CRC
 	this.binaryId = AudioSignUtil.hex2bin(options.id || AudioSignUtil.bin2hex(AudioSignUtil.randomBinary(size)), size);
 	if (this.binaryId.indexOf(undefined) >= 0)
@@ -2824,7 +2825,11 @@ var AudioSignBroadcaster = function(options){
 		/*	Creating sound buffer	*/
 		_this._sound = audioSignAudioContext.createBufferSource();
 	    _this._sound.loop = true;
-	    _this._sound.connect(audioSignAudioContext.destination);
+
+	    /* Create a gain gainNode	*/
+		_this._gainNode = audioSignAudioContext.createGain();
+	    _this._sound.connect(_this._gainNode);
+		_this._gainNode.connect(audioSignAudioContext.destination);
 
 	    /*	Populate sound buffer	*/
 	    var bufferSize = 1 * audioSignAudioContext.sampleRate;
@@ -2858,6 +2863,17 @@ var AudioSignBroadcaster = function(options){
 
 	    /*	Start	*/
 	    _this._sound.start(0);
+
+	    /*	Blink Mode	*/
+	    if (blink){
+	    	_this._blinkInterval = setInterval(function(){
+	    		//	Set volume 0
+	    		_this._gainNode.gain.value = 1;
+	    		_this._blinkTimeout = setTimeout(function(){
+	    			_this._gainNode.gain.value = 0;
+	    		}, blink.active);
+	    	}, blink.cycle);
+	    }
 	}
 };
 
@@ -2875,8 +2891,12 @@ AudioSignBroadcaster.prototype.stop = function(){
 	if (this._state != "Started")
 		throw new Error("Not started");
 
+	clearInterval(this._blinkInterval);
+	clearTimeout(this._blinkTimeout);
+
 	this._sound.stop();
 	delete this._sound;
+	delete this._gainNode;
 	delete this._state;
 };
 

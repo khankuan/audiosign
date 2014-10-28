@@ -55,3 +55,4 @@ Options are available to configure certain settings:
 - size: Size of the id, Default 160-bits. As size increases, it becomes more unstable.
 - step: Step size between each frequency for each bit. Default 15. Too small, more unstable. Too big, audio can be more noticable.
 - baseFrequency: Base frequency to start with. Default is 18600 - (size+8) * step. Lower frequency makes the audio more noticable.
+- blink: Blink mode emits the sound wave for an active period per cycle. Default: {cycle: 1000, active: 300}.  This helps to reduce effect of mic cancellation.
