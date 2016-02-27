@@ -2808,9 +2808,9 @@ var AudioSignBroadcaster = function(options){
 	/*	Variables	*/
 	var _this = this;
 	options = options || {};
-	var size = options.size || 160;
-	var step = options.step || 15;
-	var blink = options.blink || {cycle: 1000, active: 300};
+	var size = options.size || 96;
+	var step = options.step || 20;
+	var blink = options.blink || {cycle: 1200, active: 500};
 	var baseFrequency = options.baseFrequency || 18600 - step * (size + 8);	//	8-bit CRC
 	this.binaryId = AudioSignUtil.hex2bin(options.id || AudioSignUtil.bin2hex(AudioSignUtil.randomBinary(size)), size);
 	if (this.binaryId.indexOf(undefined) >= 0)
@@ -2905,8 +2905,8 @@ var AudioSignListener = function(options){
 	/*	Variables	*/
 	var _this = this;
 	options = options || {};
-	var size = options.size || 160;
-	var step = options.step || 15;
+	var size = options.size || 96;
+	var step = options.step || 20;
 	_this.bufferSize = 8192;
 	var baseFrequency = 18600 - step * (size + 8) || options.baseFrequency;	//	8-bit CRC
 	this._listeners = {};
@@ -3044,14 +3044,16 @@ AudioSignListener.prototype.start = function(){
 AudioSignListener.prototype.stop = function(type, callback){
 	if (this._state != "Started")
 		throw new Error("Not started");
+	
+	if (this._mediaStream.getTracks()[0]){
+  	this._mediaStream.getTracks()[0].stop();
+	}
+  this._audioInput.disconnect();
+  this._scriptProcessorNode.disconnect();
 
-    this._mediaStream.stop();
-    this._audioInput.disconnect();
-    this._scriptProcessorNode.disconnect();
-
-    delete this._mediaStream;
-    delete this._audioInput;
-    delete this._scriptProcessorNode;
+  delete this._mediaStream;
+  delete this._audioInput;
+  delete this._scriptProcessorNode;
 	delete this._state;
 
 	this._emit('stopped');

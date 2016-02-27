@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "AudioSignJS allows the broadcasting/listening of an id to/from a device to another via sound (Ultrasound). It uses WebAudio to generate a soundwave and loops it continuously while broadcasting. When listening, it uses WebRTC to listen from the mic and WebAudio to process the sound captured. Currently, only 1 device can broadcast at one location at the same time.",
   "main": "gruntfile.js",
+  "scripts": {
+    "compile": "grunt"
+  },
   "directories": {
     "example": "examples"
   },
